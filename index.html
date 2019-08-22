@@ -1,0 +1,445 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Docker formatino</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+		<style>
+
+			.reveal section img {
+				background-color: white;
+			}
+
+			.reveal section img[alt] {
+				/* height: 50%;  */
+				max-width: 70%;
+				margin: 5px 0;
+				/* max-height: 80%; */
+			}
+
+			.reveal section[data-markdown] p, .reveal section[data-markdown] ul {
+				font-size:28px;
+			}
+
+			.reveal section[data-markdown] h4 {
+				font-size:36px;
+			}
+
+			.reveal section[data-markdown] code {
+				font-size:18px;
+			}
+
+			.reveal .slides section > section {
+				padding-top: 50px;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-markdown>
+					<textarea data-template>
+						# Docker formation
+
+						TODO
+					</textarea>
+				</section>
+				<section>
+					<h3>Summary</h3>
+					<section data-markdown>
+						<textarea data-template>
+							- #### Git workflow
+							- #### Semantic versioning
+							- #### Commit semantic
+							- #### In practice
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<h3>Git workflow </h3>
+					<section data-markdown>
+						<textarea data-template>
+						#### develop and master
+
+						* Master branch is the release history. Every commit is tagged.
+						* Develop branch is the integration branch of features.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+						#### develop and master
+
+						![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
+
+						</textarea>
+					</section>
+
+
+					<section data-markdown>
+						<textarea data-template>
+						#### feature branch
+
+						* feature branch should be created from develop
+						* feature branch should be merged into develop
+						* feature branch MUST not interact with master
+						* feature branch should be named feature/ID-FEATURE
+
+						Example: feature/12-my-feature
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+						#### feature branch
+
+						![workflow-feature](./img/workflow-feature.svg "Feature workflow")
+
+						</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### bugfix branch
+
+							A bugfix is the correction of a bug present in develop and not in master
+
+							* bugfix branch should be created from develop
+							* bugfix branch should be merged into develop
+							* bugfix branch MUST not interact with master
+							* bugfix branch should be named bugfix/ID-BUG
+
+							Example: bugfix/13-my-bugfix
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### release branch
+
+							- release branch should not accept new features once created
+							- release branch MUST be merged into master
+							- release branch MUST be merged into develop
+							- release branch branch should be named release/VERSION
+
+							Example: release/1.0.1
+							</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+						#### release branch
+
+						![workflow-release](./img/workflow-release.svg "Release workflow")
+
+						</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### hotfix branch
+							A hotfix is the correction of a bug present in master
+
+							- hotfix branch should be created from master
+							- hotfix branch MUST be merged into master
+							- hotfix branch MUST be merged into develop
+							- hotfix branch should be named hotfix/ID-BUG
+
+							Example: hotfix/14-my-hotfix
+
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### Synthesis
+
+							![complete-workflow-git](./img/workflow-git.svg "Complete workflow")
+
+							</textarea>
+					</section>
+				</section>
+				<section><h3>Semantic versioning</h3>
+					<section data-markdown>
+						<textarea data-template>
+							#### [Semver](https://semver.org/)
+
+							It is a convention that describes how product/package versioning should be done
+
+							* 1.0.0 => 1.0.1 : patch version (only fixes)
+							* 1.0.1 => 1.1.0 : minor version (fixes and features)
+							* 1.1.0 => 2.0.0 : major version (breaking changes)
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### Breaking changes
+
+							What is a breaking change ?
+
+							> A change in one part of a software system that potentially causes other components to fail
+
+							Examples
+							- changes in injection data API
+							- changes in generated API contract
+							- non upgradable changes in database
+							- changes in app removing a feature
+						</textarea>
+					</section>
+				</section>
+
+				<section><h3>Conventional commits</h3>
+					<section data-markdown>
+						<textarea data-template>
+						It is a [convention](https://www.conventionalcommits.org) that describes some rules for writing commit
+
+						```
+						<type>[optional scope]: <description>
+
+						[optional body]
+
+						[optional footer]
+						```
+
+						Example : Commit with body and issue link in footer
+
+						```
+						fix: minor typos in code
+
+						see the issue for details on the typos fixed
+
+						fixes issue #12
+						```
+
+					</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+						##### type
+
+						* feat, fix : tracked and used for changelogs
+						* chore, docs, style, refactor, perf, test : can be used, not tracked
+
+						##### scope
+
+						The scope is the perimeter of the commit
+						* brain-engine => worker, engine, docs, dqapi...
+						* brain-api => api, consumer,...
+
+					</textarea>
+				</section>
+
+				<section data-markdown>
+						<textarea data-template>
+							#### Examples
+
+							Simple commit
+
+							```
+							docs: correct spelling of CHANGELOG
+							```
+							Simple commit, with scope
+
+							```
+							feat(lang): added polish language
+							```
+
+							<!-- Commit with body and issue link in footer
+
+							```
+							fix: minor typos in code
+
+							see the issue for details on the typos fixed
+
+							fixes issue #12
+							``` -->
+
+							Commit with breaking changes
+
+							```
+							feat: allow provided config object to extend other configs
+
+							BREAKING CHANGE: `extends` key in config file is now used for extending other config files
+							```
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### Why
+
+							* Consistency
+							* Readability
+							* Complementary with [Semantic versioning](https://semver.org/)
+								* Allows automatic generation of changelogs
+								* Allows easier writing of upgrade documentation
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							![changelog](./img/changelog.png "Changelog")
+
+							</textarea>
+					</section>
+
+				</section>
+				<!-- <section>Code quality</section> -->
+
+				<section><h3>In practice</h3>
+					<section data-markdown>
+						<textarea data-template>
+							#### Branches
+							- Respect branch naming
+							- Branch across multiple repos for a same feature must have the same name, and be linked to the same issue
+							- One branch = One feature OR fix
+							- While doing a feature, if I see a bug/codestyle unrelated, I must do it on another branch
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							#### Merge request
+							- Merge request will be fast-forwarded, and can be squashed
+							- Branch to merge, if not squashed, MUST have clean commit (`git rebase -i`)
+							- Merge request must have 2 reviewers
+							- Reviewer must enforce several things
+								- Code style (no copy-paste, readability, no useless variables, or assignement...)
+								- Feature (content, limit case handling, unit test, ...)
+								- Linting (branch naming + commit style)
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							#### Automation
+							- Git hooks will enforce these behaviours, both for learning and consistency purposes
+								- locally
+								- on CI
+							- Release task will be automated
+								- One task for multiple repositories
+								- Separated and aggregated changelog
+								- Gitlab release
+						</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### Example : Add ensembling to monitor (1/3)
+							- Create feature branch (linked to issue if possible)
+								- `git fetch --prune`
+								- `git checkout -b feature/42-add-ensembling-monitor origin/develop`
+								- `git push --set-upstream origin feature/42-add-ensembling-monitor`
+							- Create Merge Request in WIP (Work In Progess) with title `feat(monitor): adding ensembling (fixes #42)`
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### Example : Add ensembling to monitor (2/3)
+							- Do some work
+								- `git commit -m "feat(monitor): adding ensembling"`
+								- `git commit -m "refactor(monitor): cleaning up code"`
+								- `git push`
+							- Rebase regularly on `develop`
+								- `git fetch --prune`
+								- `git rebase origin/develop`
+								- `git push --force-with-lease`
+							</textarea>
+					</section>
+
+					<section data-markdown>
+							<textarea data-template>
+							#### Example : Add ensembling to monitor (3/3)
+							- Ask for review when ready and remove WIP
+							- Two options
+								- Squash commits using option in MR options (commit message will be MR title)
+								- Clean up your commits and do a fast-forward merge
+									- `git rebase -i HEAD~5` ou `git rebase -i origin/develop`
+									- `git push --force-with-lease`
+							</textarea>
+					</section>
+					<section data-markdown>
+							<textarea data-template>
+							#### Example : Hotfix queue name (breaking brain training)
+							Same as feature, except
+							- Branch must be checkout from `master`
+							- Two MR must be created, one for `develop`, one for `master`
+							- Branch must be named `hotfix/43-fixing-queue-name`
+							- MR title should be `fix(engine): fixing queue names (fixes #43)`
+							- Commit type should be fix `fix(engine): restoring old queue names`
+							</textarea>
+					</section>
+
+
+
+				</section>
+
+				<!-- <section data-background-video-muted="true" data-background-video-loop="true" data-background-video="https://media.giphy.com/media/XHVmD4RyXgSjd8aUMb/source.mp4" > -->
+				<section>
+					<h3>Questions ?</h3>
+				</section>
+
+				<section data-markdown>
+					<textarea data-template>
+					### Sources
+
+					- [Atlassian Git Tutorials](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+					- [Conventional Commits](https://www.conventionalcommits.org)
+					- [SemVer](https://semver.org/)
+
+					</textarea>
+				</section>
+
+				<section>
+						<h3>Thank you for your attention !</h3>
+				</section>
+
+				<!-- <section>
+
+					TODO -->
+					<!-- Video use case
+					3 use-cases : feature, hotfix, release -->
+
+				<!-- </section> -->
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
