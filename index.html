@@ -182,6 +182,124 @@
 							</textarea>
 					</section>
 				</section>
+				<section>
+					<h3>Les Principales commandes de Docker</h3>
+					<section data-markdown>
+						<textarea data-template>
+							Nous allons décrires ici les principales commande docker compose, qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose build [OPTIONS]
+
+							permet de construire les images docker locales des differents services d'un fichier docker compose. 
+							cette commande est utile si les image (Dockerfiles) utiliser pour un a plusieurs service sont builder par le fichier docker compose.
+							
+							```shell
+							docker-compose build
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose pull [OPTIONS]
+
+							permets de récupérer les images docker utile aux services du registry en local.
+							si j'utilise pour un a plusieurs services des images du registry, cette comande permet de les recuperer en local pour pouvoir les utiliser.
+
+							```shell
+							docker-compose pull
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose up [OPTIONS]
+
+							permet de construire l'ensemble des conteneur/service, des volumes et des networks declarer dans le fichier docker compose.
+							il permet de tout mettre en place, les elements et leurs configurations.
+							si il y a des dockerfile a construire, ce sera fait automatiquement a la premiere execution (apres il faudras faire un docker-compose build).
+							si il y a des image a recupere, ce sera fait automatiquement a la premiere execution (apres il faudras faire un docker-compose pull).
+
+							```shell
+							docker-compose up -d
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose ps [OPTIONS]
+
+							permets d'afficher l'ensemble des services demarer, leurs etats et configurations.
+
+							```shell
+							docker-compose ps
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose exec [OPTIONS] SERVICE COMMAND [ARG...]
+
+							permets d'exécuter une commande dans un conteneur/service existant.
+							par exemple si je veux lancer la commande `ls` dans un service appelle linux;
+
+							```shell
+							docker-compose exec linux ls -a
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose attach [OPTIONS] CONTAINER
+
+							permets d'attacher le terminal à un conteneur/service existant.
+							par exemple je peux vouloir attacher mon terminal au service Linux;
+
+							```shell
+							docker-compose attach linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose logs [OPTIONS] SERVICE [SERVICE...]
+
+							permet d'afficher les logs de un a plusieurs services.
+							par exemple je peux vouloir visualiser les logs du conteneur linux et windows:
+
+							```shell
+							docker-compose logs linux windows
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker-compose stop [OPTIONS] SERVICE [SERVICE...]
+
+							sert à stopper l'exécution d'un a plusieurs service mais ne le détruit pas (ni le conteur et ni le contenu).
+							ici si je veux stopper mon conteneur Linux;
+
+							```shell
+							docker-compose stop linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker rm [OPTIONS] SERVICE [SERVICE...]
+
+							sert à détruire un a plusieurs services, supression du conteneur et de son contenu (hors volumes).
+							ici si je veux détruire mon conteneur Linux;
+
+							```shell
+							docker-compose rm linux
+							```
+						</textarea>
+					</section>
+				</section>
 				<section><h3>Semantic versioning</h3>
 					<section data-markdown>
 						<textarea data-template>
