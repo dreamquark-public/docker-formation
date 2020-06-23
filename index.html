@@ -182,6 +182,156 @@
 							</textarea>
 					</section>
 				</section>
+				<section>
+					<h3>Les Principales commandes de Docker</h3>
+					<section data-markdown>
+						<textarea data-template>
+							Nous allons décrires ici les principales commande docker qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images.
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							#### docker build [OPTIONS] PATH | URL | -
+
+							permet de construire une image via docker. 
+							par exemple si j'ai une image docker dans le dossier courant permettant d'écouter une magnifique musique:
+							
+							```shell
+							docker build - t pat&qerac/theshow .
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker push [OPTIONS] NAME[:TAG]
+
+							permets de publier une image sur le registry docker.
+							ici si je veux publier mon image précédemment builder:
+							
+							```shell
+							docker push pat&qerac/theshow:latest
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker search [OPTIONS] TERM
+
+							permets de rechercher une image dans le registry docker, par exemple si je veux la liste des images disponibles pour alpine Linux.
+
+							```shell
+							docker search alpine
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+
+							permets de récupérer une image docker du registry en local. si je veux récupérer l'image docker d'alpine Linux version 3.12.0
+
+							```shell
+							docker pull alpine:3.12.0
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker run [OPTIONS] IMAGE [COMMAND]
+
+							permets de lancer un conteneur à partir d'une image déjà existante.
+							par exemple si je veux un conteneur avec le nom Linux exécutant alpine linux 3.12.0:
+
+							```shell
+							docker run --name linux alpine:3.12.0
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker ps [OPTIONS]
+
+							permets d'afficher l'ensemble des conteneurs qui tournent sur l'hôte.
+
+							```shell
+							docker ps
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+							permets d'exécuter une commande dans un conteneur existant.
+							par exemple si je veux lancer la commande `ls` dans mon conteneur Linux;
+
+							```shell
+							docker run linux ls -a
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker attach [OPTIONS] CONTAINER
+
+							permets d'attacher le terminal à un conteneur existant.
+							par exemple je peux vouloir attacher mon terminal au conteneur Linux;
+
+							```shell
+							docker attach linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker logs [OPTIONS] CONTAINER
+
+							les conteneurs sont souvent lancés pour exécuter une commande/tache spécifique.
+							log est utile pour consulter les logs du service exécute dans le conteneur.
+							par exemple je peux vouloir visualiser les logs du conteneur Linux:
+
+							```shell
+							docker logs linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker kill [OPTIONS] CONTAINER [CONTAINER...]
+
+							permets de kill le processus lancer dans une contenue par exemple je peux vouloir kill la commande du conteneur Linux;
+
+							```shell
+							docker kill linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
+							sert à stopper l'exécution d'un conteneur mais ne le détruit pas (ni le conteur et ni le contenu).
+							ici si je veux stopper mon conteneur Linux;
+
+							```shell
+							docker stop linux
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### docker rm [OPTIONS] CONTAINER [CONTAINER...]
+
+							sert à détruire un conteneur, supression du conteneur et de son contenu (hors volumes).
+							ici si je veux détruire mon conteneur Linux;
+
+							```shell
+							docker rm linux
+							```
+						</textarea>
+					</section>
+				</section>
 				<section><h3>Semantic versioning</h3>
 					<section data-markdown>
 						<textarea data-template>
