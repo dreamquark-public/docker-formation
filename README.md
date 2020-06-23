@@ -1,4 +1,4 @@
-# Docker formation
+# Docker & docker compose formation
 
 Presentation for dreamquark usage of Docker & Docker compose. There are simple exercices (write a Dockerfile or docker-compose file) & global concept around containerization application
 
