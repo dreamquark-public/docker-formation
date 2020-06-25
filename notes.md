@@ -5,21 +5,62 @@ Docker :
 ################################# => Théo
 SLIDE 1
 
-Notion/concept de docker : OS/pourquoi c'est plus léger/pourquoi on l'utilise en développement et en prod
-différence virtualisation/containerusiation
-namespace linux
-LXC
-RKT
+#### Pourquoi utiliser Docker & les conteneurs
 
-Flexible: Even the most complex applications can be containerized.
-Lightweight: Containers leverage and share the host kernel.
-Interchangeable: You can deploy updates and upgrades on-the-fly.
-Portable: You can build locally, deploy to the cloud, and run anywhere.
-Scalable: You can increase and automatically distribute container replicas.
-Stackable: You can stack services vertically and on-the-fly.
+* Qu'est ce que les conteneurs ?
+* Y'a t-il que Docker ?
+* Pourquoi pas utiliser des machines virtuelles ?
+* Pourquoi c'est plus léger ?
+* Viable en production & en développement ?
+* Qu'est ce qu'on y gagne ?
 
-(Il n'existe pas que docker quand on parle de "contenerisation")
-Installation de docker(Mac & Linux) / le user docker & ajout du user dans le group (pas utiliser sudo, pourquoi?)
+##### Qu'est ce que les conteneurs ?
+
+* Environnement de système d'exploitation
+* Fourni une portabilité du logiciel
+* Facilité de partager et construire une application
+* Installe QUE le nécessaire => Léger, + efficiente (moins de resources)
+* Il existe un conteneur pour TOUT
+
+##### Pourquoi les utilise-t-on ?
+
+* Normalisation entre dev/prod
+* "Ca marche sur mon pc"
+* Scalable
+* Isolement
+* Plus facile à manager que des VM
+
+##### Ce qu'il y a d'autres
+
+* VMs
+* RKT => concurrent de Docker
+
+##### Installation Linux
+
+* Installation du démon Docker (processus en background)
+* Paquet à part entière de Ubuntu
+$ sudo apt-get update
+
+$ sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+$ sudo apt-get update
+$ sudo apt-get install docker-ce docker-ce-cli containerd.io
+$ sudo groupadd docker
+$ sudo usermod -aG docker $USER
+
+* Se mettre dans le groupe docker (afin de pas faire du root)
+* https://docs.docker.com/engine/install/ubuntu/#install-docker-engine
+
+##### Installation MacOS
+
+* Soft a installé directement
+* https://docs.docker.com/docker-for-mac/install/
+
 
 ################################# => Antoine
 SLIDE 2
@@ -48,10 +89,60 @@ Docker => Différence entre image et container(run) => répondre à la question 
 ################################# => Théo
 SLIDE 4
 
-Le Dockerfile
-Build --> vers un container registry
+#### DockerFile / Principe
+
+* Création de l'image au moment du docker build
+* .dockerignore du dossier passé dans le docker build
+* Principe des layers (si identique utilise celui en cache)
+* Important de bien ordonnnancer les commandes du DOCKERFILE
+* Commandes utilisées dans nos DockerFile
+
+FROM => Image utilisée comme base (comme ubuntu, debian)
+FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
+
+ENV => Ajout d'une variable d'environnement
+ENV <key> <value>
+
+RUN => Commande exécuté dans le conteneur (à l'instant t)
+RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
+RUN /bin/bash -c 'source $HOME/.bashrc; \
+echo $HOME'
+
+WORKDIR => Les prochaines commandes RUN/CMD/ENTRYPOINT/COPY/ADD seront exécuté dans ce dossier après
+WORKDIR /path/to/workdir
+
+USER Setter le username/UID qui utilise les commandes RUN/CMD/ENTRYPOINT
+USER <user>[:<group>]
+
+COPY => copie ou télécharge des fichiers dans l'image
+COPY [--chown=<user>:<group>] <src>... <dest>
+COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+
+ADD=> copie ou télécharge des fichiers dans l'image mais peut ajouter une commande (comme décompresser un tar par ex)
+ADD [--chown=<user>:<group>] <src>... <dest>
+ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+
+EXPOSE Expose un port du conteneur & écoute spécifiquement ce port (pour publier le port docker run -p)
+EXPOSE <port> [<port>/<protocol>...]
+
+VOLUME (docker run -v) Crée un point de montage dans le conteneur & dans le file system (persistence de la donnée)
+VOLUME ["/data"]
+
+ENTRYPOINT spécifie un binaire ou un script qui sera exécuté au runtime du conteneur. (un exécutable ex: nginx)
+ENTRYPOINT Utilisé si on veut des images à usage unique (genre serveur web)
+ENTRYPOINT ["executable", "param1", "param2"]
+
+CMD Pour spécifier une commande à exécuter seulement lors du lancement du conteneur
+CMD Si on surcharge la commande de run, cela va directement écraser la commande (en laissant l'entrypoint), peut servir pour passer des arguments
+CMD ["executable","param1","param2"]
+CMD command param1 param2
 
 Microbadger --> layer --> paralelle avec git, suite chainé de hash (présentation)
+* https://microbadger.com/
+* Analyse des hashs de layer des images
+* Photo de l'analyse
+
+Après avoir build les images, pour les partager on peut les pousser dans conteneur registry
 
 ################################# => Antoine
 SLIDE 5
@@ -121,6 +212,8 @@ SLIDE 10
 DREAMQUARK PART:
 
 Savoir les différences entre le vendor, le build, le up. Ou rm ou stop. REPONDRE A LA QUESTION DES VAR DENV
+Le rebuild ne répare pas grand chose
+Différence avec le makefile
 
 ################################# => Antoine
 SLIDE 11
