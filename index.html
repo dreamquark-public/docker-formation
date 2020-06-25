@@ -59,8 +59,6 @@
 						# Docker & docker compose formation
 
 						### Introduction
-
-						Pourquoi et comment l'utilise t-on ?
 					</textarea>
 				</section>
 				<section>
@@ -68,7 +66,7 @@
 					<section data-markdown>
 						<textarea data-template>
 							- #### Notion sur Docker & installation
-							- #### Commandes Docker
+							- #### Commandes
 							- #### DockerFile et principes
 							- #### Surprise (c'est un exercice)
 							- #### Conteneur registry
@@ -95,7 +93,7 @@
 
 							##### Pourquoi utiliser Docker & les conteneurs
 
-							* Qu'est ce que les conteneurs ?
+							* C'est quoi un conteneur ?
 							* Y'a t-il que Docker ?
 							* Pourquoi pas utiliser des machines virtuelles ?
 							* Pourquoi c'est plus léger ?
@@ -110,15 +108,12 @@
 
 							##### Qu'est ce que les conteneurs ?
 
-
 							* Environnement de système d'exploitation
 							* Fourni une portabilité du logiciel
 							* Facilité de partager et construire une application
-							* Installe QUE le nécessaire => Léger, + efficiente (moins de resources)
+							* N'installe QUE le nécessaire => Léger, + efficiente (moins de resources)
 							* Il existe un conteneur pour TOUT
 							
-							![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
-
 						</textarea>
 					</section>
 
@@ -132,10 +127,9 @@
 							* "Ca marche sur mon pc"
 							* Scalable
 							* Isolement
-							* Plus facile à manager que des VM
+							* Plus facile à manager que des VMs
 							* Evite d'installer tout sur sa machine
 							
-							![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
 
 						</textarea>
 					</section>
@@ -143,10 +137,10 @@
 					<section data-markdown>
 						<textarea data-template>
 
-							##### Ce qu'il y a d'autres
+							##### Les alternatives
 
 							* VMs
-							* RKT => concurrent de Docker
+							* RKT
 						
 						</textarea>
 					</section>
@@ -155,9 +149,6 @@
 						<textarea data-template>
 
 							##### Installation Linux
-
-							* VMs
-							* RKT => concurrent de Docker
 						
 							```
 							sudo apt-get update
@@ -189,10 +180,12 @@
 
 					<section data-markdown>
 						<textarea data-template>
+
 							##### Installation MacOS
 
-							* Soft a installé directement
-							* https://docs.docker.com/docker-for-mac/install/							
+							* Software a installé directement
+							* https://docs.docker.com/docker-for-mac/install/		
+
 						</textarea>
 					</section>
 
@@ -214,11 +207,11 @@
 					<section data-markdown>
 						<textarea data-template>
 							
-							* **FROM**: Image utilisée comme base (comme ubuntu, debian)
+							* **FROM**: image utilisée comme base (comme ubuntu, debian)
 
-							* **ENV**: Ajout d'une variable d'environnement
+							* **ENV**: ajout d'une variable d'environnement
 
-							* **RUN**: Commande exécuté dans le conteneur (à l'instant t)
+							* **RUN**: commande exécutée dans le conteneur (à l'instant t)
 
 							```
 							FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
@@ -236,11 +229,11 @@
 					<section data-markdown>
 						<textarea data-template>
 							
-							* **WORKDIR**: Les prochaines commandes RUN/CMD/ENTRYPOINT/COPY/ADD seront exécuté dans ce dossier après
+							* **WORKDIR**: les prochaines commandes RUN/CMD/ENTRYPOINT/COPY/ADD seront exécutés dans ce dossier
 							
-							* **USER**: Setter le username/UID qui utilise les commandes RUN/CMD/ENTRYPOINT
+							* **USER**: setter le username/UID qui utilise les commandes RUN/CMD/ENTRYPOINT
 
-							* **COPY**: Copie ou télécharge des fichiers dans l'image
+							* **COPY**: copie ou télécharge des fichiers dans l'image
 
 							```
 							WORKDIR /path/to/workdir
@@ -258,9 +251,9 @@
 
 							* **ADD**: copie ou télécharge des fichiers dans l'image mais peut ajouter une commande (comme décompresser un tar par ex)
 
-							* **EXPOSE**: Expose un port du conteneur & écoute spécifiquement ce port (pour publier le port docker run -p)
+							* **EXPOSE**: expose un port du conteneur & écoute spécifiquement ce port (pour publier le port docker run -p)
 
-							* **VOLUME**: (docker run -v) Crée un point de montage dans le conteneur & dans le file system (persistence de la donnée)
+							* **VOLUME**: (docker run -v) crée un point de montage dans le conteneur & dans le file system du host (persistence de la donnée)
 
 							```
 							ADD [--chown=<user>:<group>] <src>... <dest>
@@ -276,7 +269,7 @@
 					<section data-markdown>
 						<textarea data-template>
 
-							* **ENTRYPOINT**: spécifie un binaire ou un script qui sera exécuté au runtime du conteneur. (un exécutable ex: nginx)
+							* **ENTRYPOINT**: spécifie un binaire ou un script qui sera exécuté au runtime du conteneur (un exécutable ex: nginx)
 
 							* **CMD**: Pour spécifier une commande à exécuter seulement lors du lancement du conteneur
 							* Si on surcharge la commande de run, cela va directement écraser la commande (en laissant l'entrypoint), peut servir pour passer des arguments
@@ -299,7 +292,8 @@
 							
 							* [Microbadger](https://microbadger.com/)
 							* Analyse des hashs de layer des images
-							* Photo de l'analyse
+							
+							![MicroBadger image python Circleci](./img/microbadger.png)
 							
 							* Après avoir build les images, pour les partager on peut les pousser dans conteneur registry
 							
@@ -855,20 +849,27 @@
 						<textarea data-template>
 							
 							##### Pourquoi Kubernetes ?
+							
+							![Kubernetes logo](./img/logokub.png)
 
 							* Porté par Google & open source (fondation CloudNative)
 							* Orchestrateur de contenu
-							* Technologie qui s'universalise
 							* Supporté par la majorité des cloud provider (et on prem)
 							* Facilement configurable
 							* Permet une scalabilité très réactive
 							* Désigné pour du micro-service
 							* Conteneur centric
 							* Fonctionne SUR des machines/noeuds
-							
-							Screen
-							
 							* Possible d'installer Minikube en local pour faire des tests de déploiement Kubernetes
+							
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Pourquoi Kubernetes ?
+							
+							![Kubernetes noeuds & pods](./img/kubernetes.png)
 
 							
 						</textarea>
@@ -892,6 +893,8 @@
 						<textarea data-template>
 							
 							##### Helm
+							
+							![Helm logo](./img/logo-helm.png)
 
 							* Package manager de configuration Kubernetes
 							* Soutenu par Kubernetes directement
@@ -901,7 +904,7 @@
 							* Simplifie énormément la configuration 
 							* L'upgrade de configuration est plus simple (rollback possible)
 							
-							-  si vous voulez faire un serveur minecraft local (avec Minikube) : 
+							-  Si vous voulez faire un serveur minecraft local (avec Minikube) : 
 							```
 							helm install --name my-release \
 								--set minecraftServer.eula=true,persistence.dataDir.enabled=false \
