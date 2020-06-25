@@ -58,42 +58,66 @@
 					<textarea data-template>
 						# Docker & docker compose formation
 
-						Why & how to use it ?
+						### Introduction
+
+						Pourquoi et comment l'utilise t-on ?
 					</textarea>
 				</section>
 				<section>
-					<h3>Summary</h3>
+					<h3>Table des matières</h3>
 					<section data-markdown>
 						<textarea data-template>
-							- #### Global notions about Docker
-							- #### Docker installation
-							- #### Understand a Dockerfile
-							- #### Common docker command (used in Dreamquark)
-							- #### Needing with Docker-compose
-							- #### Network & volume with docker-compose
-							- #### Orchestration containers
+							- #### Notion sur Docker & installation
+							- #### Commandes Docker
+							- #### DockerFile et principes
+							- #### Surprise (c'est un exercice)
+							- #### Conteneur registry
+							- #### Nettoyage
 						</textarea>
 					</section>
 				</section>
 				<section>
-					<h3>Global notions about Docker </h3>
+					<h3>Table des matières</h3>
 					<section data-markdown>
 						<textarea data-template>
-						#### Pourquoi utiliser Docker & les conteneurs
+							- #### Docker-coooooompose
+							- #### Son installation
+							- #### Quid de Dreamquark
+							- #### Another surprise (c'est toujours un exercice)
+							- #### Passage en production
+						</textarea>
+					</section>
+				</section>
+				<section>
+					<h3>Présentation Docker </h3>
+					<section data-markdown>
+						<textarea data-template>
 
-						* Y'a t-il que Docker ?
-						* Pourquoi pas utiliser des machines virtuelles ?
-						* Pourquoi c'est plus léger ?
-						* Viable en production & en développement ?
-						* Qu'est ce qu'on y gagne ?
+							##### Pourquoi utiliser Docker & les conteneurs
+
+							* Qu'est ce que les conteneurs ?
+							* Y'a t-il que Docker ?
+							* Pourquoi pas utiliser des machines virtuelles ?
+							* Pourquoi c'est plus léger ?
+							* Viable en production & en développement ?
+							* Qu'est ce qu'on y gagne ?
+						
 						</textarea>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-						#### Pourquoi utiliser Docker & les conteneurs
 
-						![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
+							##### Qu'est ce que les conteneurs ?
+
+
+							* Environnement de système d'exploitation
+							* Fourni une portabilité du logiciel
+							* Facilité de partager et construire une application
+							* Installe QUE le nécessaire => Léger, + efficiente (moins de resources)
+							* Il existe un conteneur pour TOUT
+							
+							![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
 
 						</textarea>
 					</section>
@@ -101,86 +125,189 @@
 
 					<section data-markdown>
 						<textarea data-template>
-						#### feature branch
 
-						* feature branch should be created from develop
-						* feature branch should be merged into develop
-						* feature branch MUST not interact with master
-						* feature branch should be named feature/ID-FEATURE
+							##### Pourquoi les utilise-t-on ?
 
-						Example: feature/12-my-feature
+							* Normalisation entre dev/prod
+							* "Ca marche sur mon pc"
+							* Scalable
+							* Isolement
+							* Plus facile à manager que des VM
+							* Evite d'installer tout sur sa machine
+							
+							![workflow-master-develop](./img/workflow-master-develop.svg "Master-develop workflow")
+
 						</textarea>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-						#### feature branch
 
-						![workflow-feature](./img/workflow-feature.svg "Feature workflow")
+							##### Ce qu'il y a d'autres
 
+							* VMs
+							* RKT => concurrent de Docker
+						
 						</textarea>
-					</section>
-
-					<section data-markdown>
-							<textarea data-template>
-							#### bugfix branch
-
-							A bugfix is the correction of a bug present in develop and not in master
-
-							* bugfix branch should be created from develop
-							* bugfix branch should be merged into develop
-							* bugfix branch MUST not interact with master
-							* bugfix branch should be named bugfix/ID-BUG
-
-							Example: bugfix/13-my-bugfix
-							</textarea>
-					</section>
-
-					<section data-markdown>
-							<textarea data-template>
-							#### release branch
-
-							- release branch should not accept new features once created
-							- release branch MUST be merged into master
-							- release branch MUST be merged into develop
-							- release branch branch should be named release/VERSION
-
-							Example: release/1.0.1
-							</textarea>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-						#### release branch
 
-						![workflow-release](./img/workflow-release.svg "Release workflow")
+							##### Installation Linux
+
+							* VMs
+							* RKT => concurrent de Docker
+						
+							```
+							sudo apt-get update
+	
+							sudo apt-get install \
+								apt-transport-https \
+								ca-certificates \
+								curl \
+								gnupg-agent \
+								software-properties-common
+
+							curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+							
+							sudo apt-get update
+							
+							sudo apt-get install docker-ce docker-ce-cli containerd.io
+							
+							sudo groupadd docker
+							
+							sudo usermod -aG docker $USER						
+
+							```
+							* Se mettre dans le groupe docker (afin de pas faire du root)
+							* https://docs.docker.com/engine/install/ubuntu/#install-docker-engine
+
+						</textarea>
+					</section>
+
+
+					<section data-markdown>
+						<textarea data-template>
+							##### Installation MacOS
+
+							* Soft a installé directement
+							* https://docs.docker.com/docker-for-mac/install/							
+						</textarea>
+					</section>
+
+
+				</section>
+				<section><h3>DockerFile</h3>
+					<section data-markdown>
+						<textarea data-template>
+							
+							* Création de l'image au moment du docker build
+							* .dockerignore du dossier passé dans le docker build
+							* Principe des layers (si identique utilise celui en cache)
+							* Important de bien ordonnnancer les commandes du DOCKERFILE
+							* Commandes utilisées dans nos DockerFile
 
 						</textarea>
 					</section>
 
 					<section data-markdown>
-							<textarea data-template>
-							#### hotfix branch
-							A hotfix is the correction of a bug present in master
+						<textarea data-template>
+							
+							* **FROM**: Image utilisée comme base (comme ubuntu, debian)
 
-							- hotfix branch should be created from master
-							- hotfix branch MUST be merged into master
-							- hotfix branch MUST be merged into develop
-							- hotfix branch should be named hotfix/ID-BUG
+							* **ENV**: Ajout d'une variable d'environnement
 
-							Example: hotfix/14-my-hotfix
+							* **RUN**: Commande exécuté dans le conteneur (à l'instant t)
 
-							</textarea>
+							```
+							FROM [--platform=<platform>] <image>[:<tag>] [AS <name>]
+							
+							ENV <key> <value>
+							
+							RUN /bin/bash -c 'source $HOME/.bashrc; echo $HOME'
+							RUN /bin/bash -c 'source $HOME/.bashrc; \
+							echo $HOME'							
+							```
+
+						</textarea>
 					</section>
 
 					<section data-markdown>
-							<textarea data-template>
-							#### Synthesis
+						<textarea data-template>
+							
+							* **WORKDIR**: Les prochaines commandes RUN/CMD/ENTRYPOINT/COPY/ADD seront exécuté dans ce dossier après
+							
+							* **USER**: Setter le username/UID qui utilise les commandes RUN/CMD/ENTRYPOINT
 
-							![complete-workflow-git](./img/workflow-git.svg "Complete workflow")
+							* **COPY**: Copie ou télécharge des fichiers dans l'image
 
-							</textarea>
+							```
+							WORKDIR /path/to/workdir
+							
+							USER <user>[:<group>]
+							
+							COPY [--chown=<user>:<group>] <src>... <dest>
+							COPY [--chown=<user>:<group>] ["<src>",... "<dest>"]
+							```
+
+						</textarea>
 					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							* **ADD**: copie ou télécharge des fichiers dans l'image mais peut ajouter une commande (comme décompresser un tar par ex)
+
+							* **EXPOSE**: Expose un port du conteneur & écoute spécifiquement ce port (pour publier le port docker run -p)
+
+							* **VOLUME**: (docker run -v) Crée un point de montage dans le conteneur & dans le file system (persistence de la donnée)
+
+							```
+							ADD [--chown=<user>:<group>] <src>... <dest>
+							ADD [--chown=<user>:<group>] ["<src>",... "<dest>"]
+							
+							EXPOSE <port> [<port>/<protocol>...]
+							
+							VOLUME ["/data"]
+							```
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							* **ENTRYPOINT**: spécifie un binaire ou un script qui sera exécuté au runtime du conteneur. (un exécutable ex: nginx)
+
+							* **CMD**: Pour spécifier une commande à exécuter seulement lors du lancement du conteneur
+							* Si on surcharge la commande de run, cela va directement écraser la commande (en laissant l'entrypoint), peut servir pour passer des arguments
+
+							```
+							ENTRYPOINT Utilisé si on veut des images à usage unique (genre serveur web)
+							ENTRYPOINT ["executable", "param1", "param2"]
+							
+							CMD ["executable","param1","param2"]
+							CMD command param1 param2
+
+							```
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							#####  Microbadger 
+							
+							* [Microbadger](https://microbadger.com/)
+							* Analyse des hashs de layer des images
+							* Photo de l'analyse
+							
+							* Après avoir build les images, pour les partager on peut les pousser dans conteneur registry
+							
+						</textarea>
+					</section>
+				</section>
+
+
 				</section>
 				<section>
 					<h3>Principales commandes Docker</h3>
@@ -211,6 +338,9 @@
 							
 							```shell
 							docker push pat&qerac/theshow:latest
+							```
+						</textarea>
+					</section>
 					<section data-markdown>
 						<textarea data-template>
 							#### docker search [OPTIONS] TERM
@@ -533,243 +663,275 @@
 					</section>
 				</section>
 
-				<section><h3>Semantic versioning</h3>
-
+				<section><h3>Conteneur registry</h3>
 					<section data-markdown>
 						<textarea data-template>
-							#### [Semver](https://semver.org/)
 
-							It is a convention that describes how product/package versioning should be done
+							##### Comment partager les images que l'on vient de créer ?
 
-							* 1.0.0 => 1.0.1 : patch version (only fixes)
-							* 1.0.1 => 1.1.0 : minor version (fixes and features)
-							* 1.1.0 => 2.0.0 : major version (breaking changes)
-
-						</textarea>
-					</section>
-					<section data-markdown>
-						<textarea data-template>
-							#### Breaking changes
-
-							What is a breaking change ?
-
-							> A change in one part of a software system that potentially causes other components to fail
-
-							Examples
-							- changes in injection data API
-							- changes in generated API contract
-							- non upgradable changes in database
-							- changes in app removing a feature
-						</textarea>
-					</section>
-				</section>
-
-				<section><h3>Conventional commits</h3>
-					<section data-markdown>
-						<textarea data-template>
-						It is a [convention](https://www.conventionalcommits.org) that describes some rules for writing commit
-
-						```
-						<type>[optional scope]: <description>
-
-						[optional body]
-
-						[optional footer]
-						```
-
-						Example : Commit with body and issue link in footer
-
-						```
-						fix: minor typos in code
-
-						see the issue for details on the typos fixed
-
-						fixes issue #12
-						```
-
-					</textarea>
-				</section>
-
-				<section data-markdown>
-						<textarea data-template>
-						##### type
-
-						* feat, fix : tracked and used for changelogs
-						* chore, docs, style, refactor, perf, test : can be used, not tracked
-
-						##### scope
-
-						The scope is the perimeter of the commit
-						* brain-engine => worker, engine, docs, dqapi...
-						* brain-api => api, consumer,...
-
-					</textarea>
-				</section>
-
-				<section data-markdown>
-						<textarea data-template>
-							#### Examples
-
-							Simple commit
-
+							* Le conteneur registry => DQ utilise Docker Hub
+							* Il en existe d'autres: celui de GCP/Azure/AWS par exemple
+							* Outil centralisé afin de gérer les versions d'images, les droits d'accès, analyse des images etc
+							* Branché à la CI (CircleCI dans notre cas)
+							* Docker push => envoie le build de l'image avec le tag DOCKER_TAG seléctionné
+							
 							```
-							docs: correct spelling of CHANGELOG
-							```
-							Simple commit, with scope
-
-							```
-							feat(lang): added polish language
+							<container_regsitry>/<image_name>:<image_tag>
 							```
 
-							<!-- Commit with body and issue link in footer
+							- *dreamquark* cela veut dire qu'on l'envoi dans le conteneur registry dreamquark
+							* Quand on build on crée une image unique avec un sha256
 
-							```
-							fix: minor typos in code
 
-							see the issue for details on the typos fixed
-
-							fixes issue #12
-							``` -->
-
-							Commit with breaking changes
-
-							```
-							feat: allow provided config object to extend other configs
-
-							BREAKING CHANGE: `extends` key in config file is now used for extending other config files
-							```
-							</textarea>
-					</section>
-
-					<section data-markdown>
-							<textarea data-template>
-							#### Why
-
-							* Consistency
-							* Readability
-							* Complementary with [Semantic versioning](https://semver.org/)
-								* Allows automatic generation of changelogs
-								* Allows easier writing of upgrade documentation
-							</textarea>
-					</section>
-
-					<section data-markdown>
-							<textarea data-template>
-							![changelog](./img/changelog.png "Changelog")
-
-							</textarea>
-					</section>
-
-				</section>
-				<!-- <section>Code quality</section> -->
-
-				<section><h3>In practice</h3>
-					<section data-markdown>
-						<textarea data-template>
-							#### Branches
-							- Respect branch naming
-							- Branch across multiple repos for a same feature must have the same name, and be linked to the same issue
-							- One branch = One feature OR fix
-							- While doing a feature, if I see a bug/codestyle unrelated, I must do it on another branch
 						</textarea>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-							#### Merge request
-							- Merge request will be fast-forwarded, and can be squashed
-							- Branch to merge, if not squashed, MUST have clean commit (`git rebase -i`)
-							- Merge request must have 2 reviewers
-							- Reviewer must enforce several things
-								- Code style (no copy-paste, readability, no useless variables, or assignement...)
-								- Feature (content, limit case handling, unit test, ...)
-								- Linting (branch naming + commit style)
+							
+							##### Différence entre image de dev et de prod
+
+							* Permet déjà d'avoir un environnement iso-prod
+							* Très peu de différence
+							* En developpement, on monte en volume le code source afin de faire les changements realtime
+							* On copie les fichiers/dossiers en prod
+
 						</textarea>
 					</section>
 
 					<section data-markdown>
 						<textarea data-template>
-							#### Automation
-							- Git hooks will enforce these behaviours, both for learning and consistency purposes
-								- locally
-								- on CI
-							- Release task will be automated
-								- One task for multiple repositories
-								- Separated and aggregated changelog
-								- Gitlab release
+
+							##### Docker save/export/restore/cp
+
+							* docker save ou export sensiblement identique 
+							```
+							docker save [OPTIONS] IMAGE [IMAGE...]
+							docker export [OPTIONS] CONTAINER
+							```
+							* Save pour une image, export pour un container
+							* docker load pour une image save => permet de l'ajouter à son registry interne comme un pull
+							* docker import à la suite d'un export => permet de l'ajouter à son registry interne comme un pull
+
+
+						</textarea>
+					</section>
+				</section>
+
+
+				<section><h3>Docker-compose</h3>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### Pourquoi docker-compose
+
+							* Comment "faire parler" les conteneurs entre eux (réseau)
+							* Comment configurer en runtime plusieurs conteneurs à la fois
+
 						</textarea>
 					</section>
 
 					<section data-markdown>
-							<textarea data-template>
-							#### Example : Add ensembling to monitor (1/3)
-							- Create feature branch (linked to issue if possible)
-								- `git fetch --prune`
-								- `git checkout -b feature/42-add-ensembling-monitor origin/develop`
-								- `git push --set-upstream origin feature/42-add-ensembling-monitor`
-							- Create Merge Request in WIP (Work In Progess) with title `feat(monitor): adding ensembling (fixes #42)`
-							</textarea>
+						<textarea data-template>
+							
+							##### Docker-compose
+
+							* Outil maintenu par docker : [DockerCompose](https://github.com/docker/compose)
+							* En une seule commande on peut lancer plusieurs conteneurs (appelé service)
+							* Description simple du réseau, des volumes (pas un enchainement de commande docker) entre autre
+							* Tout ce qu'on peut faire avec docker-compose peut être fait en commande docker
+							* Décrit en format YAML
+							* Un seul fichier mais peut être surchargé
+
+						</textarea>
 					</section>
 
 					<section data-markdown>
-							<textarea data-template>
-							#### Example : Add ensembling to monitor (2/3)
-							- Do some work
-								- `git commit -m "feat(monitor): adding ensembling"`
-								- `git commit -m "refactor(monitor): cleaning up code"`
-								- `git push`
-							- Rebase regularly on `develop`
-								- `git fetch --prune`
-								- `git rebase origin/develop`
-								- `git push --force-with-lease`
-							</textarea>
+						<textarea data-template>
+
+							##### Docker-compose
+
+							* On peut décrire donc :
+								- Image utilisé
+								- Les variables d'environnement
+								- Les volumes
+								- Les ports à exposer du conteneur
+								- Commande de démarrage (ou l'entrypoint)
+								- Le réseau utilisé
+								- etc..
+							* Peut avoir une notion de dépendance entre les conteneurs (DB démarre avant le serveur web)
+							* Point d'appui pour la production (différent fichier de configuration)
+							* Prémice de l'orchestration et pousse à réfléchir sur le déploiment de l'application
+
+						</textarea>
 					</section>
 
 					<section data-markdown>
-							<textarea data-template>
-							#### Example : Add ensembling to monitor (3/3)
-							- Ask for review when ready and remove WIP
-							- Two options
-								- Squash commits using option in MR options (commit message will be MR title)
-								- Clean up your commits and do a fast-forward merge
-									- `git rebase -i HEAD~5` ou `git rebase -i origin/develop`
-									- `git push --force-with-lease`
-							</textarea>
+						<textarea data-template>
+
+							##### Docker-compose installation
+
+							```
+							sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+							
+							sudo chmod +x /usr/local/bin/docker-compose
+							```
+
+						</textarea>
 					</section>
-					<section data-markdown>
-							<textarea data-template>
-							#### Example : Hotfix queue name (breaking brain training)
-							Same as feature, except
-							- Branch must be checkout from `master`
-							- Two MR must be created, one for `develop`, one for `master`
-							- Branch must be named `hotfix/43-fixing-queue-name`
-							- MR title should be `fix(engine): fixing queue names (fixes #43)`
-							- Commit type should be fix `fix(engine): restoring old queue names`
-							</textarea>
-					</section>
-
-
-
 				</section>
 
-				<!-- <section data-background-video-muted="true" data-background-video-loop="true" data-background-video="https://media.giphy.com/media/XHVmD4RyXgSjd8aUMb/source.mp4" > -->
+				<section><h3>Démystification</h3>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### Que se passe-t-il à Dreamquark?
+
+							* les Makefiles (dans brain-docker ou autre)
+								- "raccourci" pour utiliser les commandes présentés précédemment
+								- rien de plus
+								- commande make pour faciliter le travail de chacun
+							* Exemple avec le vendor:
+							
+							```
+							vendor: ## install repositories and vendors
+								$(ENV) $(DKC) $(DKC_CFG) run --rm engine-async make vendor-dev
+								$(ENV) $(DKC) $(DKC_CFG) run --rm api make vendor
+								$(ENV) $(DKC) $(DKC_CFG) run --rm brain-app make vendor
+							.PHONY: vendor
+							```
+
+							- Simple exécution séquentielle de commande docker compose
+						  
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Que se passe-t-il à Dreamquark?
+
+							* Si changement de variable d'environnement (nom de l'image ou autre) => make up
+							* Ajout d'un network ou d'un volume => make 
+							* Le docker-compose up ne recrée que les services où il y a des changements
+							* Make build => si on utilise des images locales (voué à disparaitre) => quand on change le dockerfile surtout
+							* Make build => sachant qu'on monte en volume le code source
+							* Make vendor => lorsqu'il y a un changement dans les paquets (node_modules ou poetry)
+							
+						</textarea>
+					</section>
+					
+				</section>
+
+				<section><h3>Quid de la production</h3>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### Le passage en production
+
+							* Notre application tourne, on est très content
+							* Ca marche sur chacun de nos PC, cool
+							* Faut peut-être montrer ça au client maintenant !
+							  - Le passage en production est de mise
+
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Différentes solutions
+
+							* **Docker Swarm** => géré par Docker, permet la création d'un cluster de conteneur
+							* **OpenShift** => Surcouche de Docker & Kubernetes, gérer par RedHat
+							* **Rancher** => Surcouche de Docker & Kubernetes
+							* **Nomad** => Solution de HashiCorp
+							
+						</textarea>
+					</section>
+					
+
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Pourquoi Kubernetes ?
+
+							* Porté par Google & open source (fondation CloudNative)
+							* Orchestrateur de contenu
+							* Technologie qui s'universalise
+							* Supporté par la majorité des cloud provider (et on prem)
+							* Facilement configurable
+							* Permet une scalabilité très réactive
+							* Désigné pour du micro-service
+							* Conteneur centric
+							* Fonctionne SUR des machines/noeuds
+							
+							Screen
+							
+							* Possible d'installer Minikube en local pour faire des tests de déploiement Kubernetes
+
+							
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Il manque un truc quand même...
+
+							* Mais beaucoup de configuration et de fichiers
+							* Difficilement versionnable
+							* Templating pas évident
+							* La gestion de nombreux environnement n'était pas forcément scalable
+						
+							
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							
+							##### Helm
+
+							* Package manager de configuration Kubernetes
+							* Soutenu par Kubernetes directement
+							* Systeme de templating très simple
+							* Package l'application (notre petit déploiement Brainy avec ses moultes briques)
+							* En un fichier de configuration (YAML encore et toujours)
+							* Simplifie énormément la configuration 
+							* L'upgrade de configuration est plus simple (rollback possible)
+							
+							-  si vous voulez faire un serveur minecraft local (avec Minikube) : 
+							```
+							helm install --name my-release \
+								--set minecraftServer.eula=true,persistence.dataDir.enabled=false \
+								stable/minecraft
+							```
+
+						</textarea>
+					</section>
+					
+				</section>
+						
 				<section>
-					<h3>Questions ?</h3>
+					<h3>Liens intéressant, les sources quoi</h3>
+					<section data-markdown>
+						<textarea data-template>
+							
+							* https://kubernetes.io/docs/home/
+							* https://helm.sh/
+							* https://docs.docker.com/get-started/
+							  -  beaucoup de bons tutos directement sur Docker si vous voulez approfondir
+							* https://docs.docker.com/compose/
+							* https://docs.docker.com/compose/compose-file/
+
+						</textarea>
+					</section>
 				</section>
 
-				<section data-markdown>
-					<textarea data-template>
-					### Sources
-
-					- [Atlassian Git Tutorials](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
-					- [Conventional Commits](https://www.conventionalcommits.org)
-					- [SemVer](https://semver.org/)
-
-					</textarea>
-				</section>
-
+						
 				<section>
-						<h3>Thank you for your attention !</h3>
+						<h3>Merci pour votre attention !</h3>
 				</section>
 
 				<!-- <section>
