@@ -207,14 +207,40 @@ Lazy Docker
 ################################# => Théo
 SLIDE 8
 
-Problème ==> Comment "faire parler" des conteneurs entre eux.
-Network, workdir, volume, user, entrypoint, command
+#### Pourquoi docker-compose
 
-Docker-compose :
+* Comment "faire parler" les conteneurs entre eux (réseau)
+* Comment configurer en runtime plusieurs conteneurs à la fois
 
-Qu'est ce que c'est
-Quel problème ça répond
-Problème => network, volume, sert pour le dev (point d'appui pour la prod).
+#### Docker-compose
+
+* Outil maintenu par docker : https://github.com/docker/compose
+* En une seule commande on peut lancer plusieurs conteneurs (appelé service)
+* Description simple du réseau, des volumes (pas un enchainement de commande docker) entre autre
+* Tout ce qu'on peut faire avec docker-compose peut être fait en commande docker
+* Décrit en format YAML
+* Un seul fichier mais peut être surchargé
+
+#### Docker-compose
+
+* On peut décrire donc :
+  - Image utilisé
+  - Les variables d'environnement
+  - Les volumes
+  - Les ports à exposer du conteneur
+  - Commande de démarrage (ou l'entrypoint)
+  - Le réseau utilisé
+  - etc..
+* Peut avoir une notion de dépendance entre les conteneurs (DB démarre avant le serveur web)
+* Point d'appui pour la production (différent fichier de configuration)
+* Prémice de l'orchestration et pousse à réfléchir sur le déploiment de l'application
+
+#### Docker-compose installation
+
+sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+sudo chmod +x /usr/local/bin/docker-compose
+
 
 ################################# => Antoine
 SLIDE 9
@@ -234,10 +260,28 @@ SLIDE 10
 
 DREAMQUARK PART:
 
-Savoir les différences entre le vendor, le build, le up. Ou rm ou stop. REPONDRE A LA QUESTION DES VAR DENV
-Le rebuild ne répare pas grand chose
-Différence avec le makefile
+#### Démystification
 
+* les Makefiles (dans brain-docker ou autre)
+  - "Raccourci" pour utiliser les commandes présentés précédemment
+  - Rien de plus
+  - Commande make pour faciliter le travail de chacun
+* Exemple avec le vendor:
+
+vendor: ## install repositories and vendors
+	$(ENV) $(DKC) $(DKC_CFG) run --rm engine-async make vendor-dev
+	$(ENV) $(DKC) $(DKC_CFG) run --rm api make vendor
+	$(ENV) $(DKC) $(DKC_CFG) run --rm brain-app make vendor
+.PHONY: vendor
+
+  - Simple exécution séquentiel de commande docker compose
+
+* Si changement de variable d'environnement (nom de l'image ou autre) => make up
+* Ajout d'un network ou d'un volume => make 
+* Le docker-compose up ne recrée que les services où il y a des changements
+* Make build => si on utilise des images locales (voué à disparaitre) => quand on change le dockerfile surtout
+* Make build => sachant qu'on monte en volume le code source
+* Make vendor => lorsqu'il y a un changement dans les paquets (node_modules ou poetry)
 
 ################################# => Antoine
 SLIDE 11
@@ -253,9 +297,65 @@ Ecrire un docker-compose.yml
 ################################# => Théo
 SLIDE 12
 
-présentation swarm/stack
+#### Le passage en production
 
-Kubernetes --> pourquoi on l'utilise ?
-Helm -> présentation et pourquoi on l'utilise
+* Notre application tourne, on est très content
+* Ca marche sur chacun des PC de la boite, cool
+* Faut peut-être montrer ça au client maintenant !
+  => Le passage en production est de mise
+
+#### Différentes solutions
+
+* Docker Swarm => gérer par Docker, permet la création d'un cluster de conteneur
+* OpenShift => Surcouche de Docker & Kubernetes, gérer par RedHat
+* Rancher => Surcouche de Docker & Kubernetes
+* Nomad => Solution de HashiCorp
+
+#### Pourquoi Kubernetes ?
+
+* Porté par Google & open source (fondation CloudNative)
+* Orchestrateur de contenu
+* Technologie qui s'universalise
+* Supporté par la majorité des cloud provider (et on prem)
+* Facilement configurable
+* Permet une scalabilité très réactive
+* Désigné pour du micro-service
+* Conteneur centric
+* Fonctionne SUR des machines/noeuds
+
+Screen
+
+* Possible d'installer Minikube en local pour faire des tests de déploiement Kubernetes
+
+#### Il manque un truc quand même...
+
+* Mais beaucoup de configuration et de fichiers
+* Difficilement versionnable
+* Templating pas évident
+* La gestion de nombreux environnement n'était pas forcément scalable
+
+#### Helm
+
+* Package manager de configuration Kubernetes
+* Soutenu par Kubernetes directement
+* Systeme de templating très simple
+* Package l'application (notre petit déploiement Brainy avec ses moultes briques)
+* En 1 fichier de configuration (YAML encore et toujours)
+* Simplifie énormément la configuration 
+* L'upgrade de configuration est plus simple (rollback possible)
+
+ => si vous voulez faire un serveur minecraft local (avec Minikube) : 
+ helm install --name my-release \
+    --set minecraftServer.eula=true,persistence.dataDir.enabled=false \
+    stable/minecraft
 
 #################################
+
+#### Liens intéressant, les sources quoi
+
+https://kubernetes.io/docs/home/
+https://helm.sh/
+https://docs.docker.com/get-started/
+=> bcp de bon tutos directement sur Docker si vous voulez approfondir
+https://docs.docker.com/compose/
+https://docs.docker.com/compose/compose-file/
