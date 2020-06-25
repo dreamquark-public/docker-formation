@@ -29,6 +29,7 @@ SLIDE 1
 * Scalable
 * Isolement
 * Plus facile à manager que des VM
+* Evite d'installer tout sur sa machine
 
 ##### Ce qu'il y a d'autres
 
@@ -159,12 +160,34 @@ Changement sur des variables d'environnemnts
 ################################# => Théo
 SLIDE 6
 
-Push sur un docker registry (tag différent par personne) --> test registry local --> création (création du docker registry)
-Différence entre push/pull/build
+#### Comment partager les images qu'on vient de créer ?
 
-différence entre image de dev et de prod
-Docker save/export/restore
-Docker cp
+* Le conteneur registry => DQ utilise Docker Hub
+* Il en existe d'autres: celui de GCP/Azure/AWS par exemple
+* Outil centralisé afin de gérer les versions d'images, les droits d'accès, analyse des images etc
+* Branché à la CI (CircleCI dans notre cas)
+* Docker push => envoie le build de l'image avec le tag DOCKER_TAG seléctionné
+* <container_regsitry>/<image_name>:<image_tag>
+  - dreamquark/ => cela veut dire qu'on l'envoi dans le conteneur registry dreamquark
+  - existe aussi dreamquarkprod
+* Quand on build on crée une image unique avec un sha256
+
+##### Différence entre image de dev et de prod
+
+* Permet déjà d'avoir un environnement iso-prod
+* Très peu de différence
+* En developpement, on monte en volume le code source afin de faire les changements realtime
+* On copie les fichiers/dossiers en prod
+
+##### Docker save/export/restore/cp
+
+* docker save ou export sensiblement identique 
+- docker save [OPTIONS] IMAGE [IMAGE...]
+- docker export [OPTIONS] CONTAINER
+* Save pour une image, export pour un container
+* docker load pour une image save => permet de l'ajouter à son registry interne comme un pull
+* docker import à la suite d'un export => permet de l'ajouter à son registry interne comme un pull
+
 
 ################################# => Antoine
 SLIDE 7
@@ -214,6 +237,7 @@ DREAMQUARK PART:
 Savoir les différences entre le vendor, le build, le up. Ou rm ou stop. REPONDRE A LA QUESTION DES VAR DENV
 Le rebuild ne répare pas grand chose
 Différence avec le makefile
+
 
 ################################# => Antoine
 SLIDE 11
