@@ -474,6 +474,65 @@
 						```
 					</section>
 				</section>
+
+				<section><h3>Cleaning the system</h3>
+					<section data-markdown>
+						<textarea data-template>
+							* Docker utilise plusieurs ressources pour construire des images et des conteneurs ce qui peut finir par encombrer le système hôte.
+							* Nous allons voir quelques commandes pour cleaner le système des artefacts inutiles et/ou inutilisés.
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							* Supprimer toutes les images docker:
+							```shell
+							docker rmi -f $(docker images)
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							* Supprimer les images temporaires et inutiliser:
+							```shell
+							docker rm -f $(docker ps -aq)
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							* Clean les configurations système du démon docker:
+							```shell
+							docker system prune
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							* Suppression des networks non utilisés:
+							```shell
+							docker networks prune
+							```
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+							#### LazyDocker
+							![lazydocker exemple avec Brain](./img/lazydocker.png)
+						</textarea>
+					</section>
+
+					<section data-markdown>
+						<textarea data-template>
+							Lazydocker est un GUI permettant de visualiser les conteneurs docker lancer dans votre système.
+							* Permet aussi de lancer des commandes sur chaque entité (conteneurs, images, volumes, networks) avec la touche `x` vous aurez chaque action que vous pouvez effectuer sur un element.
+							* Permet de lancer des taches en batch sur chaque entité (conteneurs, images, volumes, networks) avec la touche `b` vous aurez accès à toutes les possibilités, y compris celle de nettoyage.
+						</textarea>
+					</section>
+					<section>
+						<div style="display:flex;justify-content:center; align-items:center;"><img src="./img/github.svg" /> <a href="https://github.com/jesseduffield/lazydocker">LazyDocker on Github</a></div>
+					</section>
+				</section>
+
 				<section><h3>Semantic versioning</h3>
 
 					<section data-markdown>
