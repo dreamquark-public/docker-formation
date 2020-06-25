@@ -211,9 +211,6 @@
 							
 							```shell
 							docker push pat&qerac/theshow:latest
-							```
-						</textarea>
-					</section>
 					<section data-markdown>
 						<textarea data-template>
 							#### docker search [OPTIONS] TERM
@@ -349,6 +346,132 @@
 							|Static   |Dynamic   |
 							|Like a class   |Like a class instance (new Class())   |
 						</textarea>
+					</section>
+				</section>
+				<section><h3>Exercice DockerFile</h3>
+						<section data-markdown>
+							<textarea data-template>
+								<h4>TP: construire une image</h3>
+								* Nous allons dans ce premier exercice construit une image docker pour une API nodejs (un peu de patience pour les ds, nous viendrons à python aussi). merci de cloner le repo avec l'api:
+								```shell
+								git clone https://github.com/
+								```
+							</textarea>
+						</section>
+						<section data-markdown>
+							<textarea data-template>
+								#### Docker image sans volume
+
+								```
+								FROM node:12.18.1-alpine
+
+								LABEL Author="Antoine AMARA"
+
+								# Global install yarn package manager and Git (git can be usefull for jest tests framework)
+								RUN apk update && apk add yarn git sqlite make
+
+								# Just a little package to easily add a free licence to a project
+								RUN npm install --global generate generate-license svgo
+
+								WORKDIR /workspace
+								COPY . /workspace/
+
+								EXPOSE 8080
+
+								ENV port=8080
+
+								RUN yarn install
+
+								CMD [ "yarn", "serve:dev" ]
+								```
+							</textarea>
+						</section>
+
+						<section>
+							<section data-markdown>
+								<textarea data-template>
+									#### Docker image sans volume
+
+									* Construction de l'image `rick-morty/api` image:
+
+									```
+									docker build -t rick-morty/api .
+									```
+								</textarea>
+							</section>
+						</section>
+					<section data-markdown>
+						* Création d'un conteneur `riick`:
+
+						```shell
+						docker run -d -p 8080:8080 --name riick rick-morty/api
+						```
+
+						* On peut accéder à l'environnant de développement GraphQL a l'adresse [localhost:8080/ide](http://localhost:8080/ide)
+					</section>
+					<section data-markdown>
+						* Si un changement est effectué dans le dockerfile, l'image doit être reconstruit pour que le prochain conteneur construit avec cette image ait les bonnes configurations.
+						
+						* Changeons la configuration du port réseaux:
+						<pre><code data-trim data-noescape>
+							...other command
+
+							EXPOSE 9000
+
+							ENV port=9000
+
+							...other command
+						</code></pre>
+						* Reconstruisons l'image `rick-morty/api`:
+						```shell
+						docker build -t rick-morty/api .
+						```
+					</section>
+					<section data-markdown>
+						* Nous allons détruire le conteneur riick et le reconstruire avec les nouvelles configurations.
+
+						```shell
+						docker rm riick
+						docker run -d -p 9000:9000 --name riick rick-morty/api
+						```
+
+						* Nous pouvons vérifier le fonctionnement en accédant à l'ide GraphQL à l'adresse [localhost:9000/ide](http://localhost:9000/ide)
+					</section>
+					<section data-markdown>
+						<h4>Docker image avec un volume</h4>
+						<pre><code data-trim data-noescape>
+							FROM node:12.18.1-alpine
+
+							LABEL Author="Antoine AMARA"
+
+							# Global install yarn package manager and Git (git can be usefull for jest tests framework)
+							RUN apk update && apk add yarn git sqlite make
+
+							# Just a little package to easily add a free licence to a project
+							RUN npm install --global generate generate-license svgo
+
+							WORKDIR /workspace
+							VOLUME /workspace/
+
+							EXPOSE 8080
+
+							ENV port=8080
+
+							RUN yarn install
+
+							CMD [ "yarn", "serve:dev" ]
+						</code></pre>
+						* Construction de l'image `rick-morty/api`:
+						
+						```shell
+						docker build -t rick-morty/api .
+						```
+					</section>
+					<section data-markdown>
+						* Maintenant nous passons le code sous la forme d'un volume partager lors du démarrage du conteneur (et donc plus besoin de reconstruire l'image si on change de dossier):
+						```shell
+						docker run -d -p 9000:9000 -v ./ --name riick rick-morty/api
+						```
 					</section>
 				</section>
 				<section><h3>Semantic versioning</h3>
@@ -614,7 +737,7 @@
 					{ src: 'plugin/markdown/markdown.js' },
 					{ src: 'plugin/notes/notes.js', async: true },
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-				]
+				],
 			});
 		</script>
 	</body>
