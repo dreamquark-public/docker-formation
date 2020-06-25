@@ -207,12 +207,12 @@ Lazy Docker
 ################################# => Théo
 SLIDE 8
 
-#### Pourquoi docker-compose
+##### Pourquoi docker-compose
 
 * Comment "faire parler" les conteneurs entre eux (réseau)
 * Comment configurer en runtime plusieurs conteneurs à la fois
 
-#### Docker-compose
+##### Docker-compose
 
 * Outil maintenu par docker : https://github.com/docker/compose
 * En une seule commande on peut lancer plusieurs conteneurs (appelé service)
@@ -221,7 +221,7 @@ SLIDE 8
 * Décrit en format YAML
 * Un seul fichier mais peut être surchargé
 
-#### Docker-compose
+##### Docker-compose
 
 * On peut décrire donc :
   - Image utilisé
@@ -235,7 +235,7 @@ SLIDE 8
 * Point d'appui pour la production (différent fichier de configuration)
 * Prémice de l'orchestration et pousse à réfléchir sur le déploiment de l'application
 
-#### Docker-compose installation
+##### Docker-compose installation
 
 sudo curl -L "https://github.com/docker/compose/releases/download/1.26.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
@@ -297,21 +297,21 @@ Ecrire un docker-compose.yml
 ################################# => Théo
 SLIDE 12
 
-#### Le passage en production
+##### Le passage en production
 
 * Notre application tourne, on est très content
 * Ca marche sur chacun des PC de la boite, cool
 * Faut peut-être montrer ça au client maintenant !
   => Le passage en production est de mise
 
-#### Différentes solutions
+##### Différentes solutions
 
 * Docker Swarm => gérer par Docker, permet la création d'un cluster de conteneur
 * OpenShift => Surcouche de Docker & Kubernetes, gérer par RedHat
 * Rancher => Surcouche de Docker & Kubernetes
 * Nomad => Solution de HashiCorp
 
-#### Pourquoi Kubernetes ?
+##### Pourquoi Kubernetes ?
 
 * Porté par Google & open source (fondation CloudNative)
 * Orchestrateur de contenu
@@ -327,14 +327,14 @@ Screen
 
 * Possible d'installer Minikube en local pour faire des tests de déploiement Kubernetes
 
-#### Il manque un truc quand même...
+##### Il manque un truc quand même...
 
 * Mais beaucoup de configuration et de fichiers
 * Difficilement versionnable
 * Templating pas évident
 * La gestion de nombreux environnement n'était pas forcément scalable
 
-#### Helm
+##### Helm
 
 * Package manager de configuration Kubernetes
 * Soutenu par Kubernetes directement
