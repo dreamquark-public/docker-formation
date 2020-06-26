@@ -191,7 +191,7 @@
 					<h3>Principales commandes Docker</h3>
 					<section data-markdown>
 						<textarea data-template>
-							Nous allons décrires ici les principales commandes Docker qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images
+							Nous allons décrire ici les principales commandes Docker qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images
 						</textarea>
 					</section>
 
@@ -777,7 +777,7 @@
 					<h3>Les Principales commandes de Docker Compose</h3>
 					<section data-markdown>
 						<textarea data-template>
-							Nous allons décrire ici les principales commande docker composée, qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images.
+							Nous allons décrire ici les principales commande de docker-compose, qui sont utiles pour démarrer, stopper, détruire, exécuter des commandes et gérer ces images
 						</textarea>
 					</section>
 
@@ -785,8 +785,8 @@
 						<textarea data-template>
 							#### docker-compose build [OPTIONS]
 
-							Permets de construire les images docker locale des différents services d'un fichier docker compose.
-							cette commande est utile si les image (Dockerfiles) utiliser pour un à plusieurs services son builder par le fichier docker compose.
+							* Permet de construire les images docker en local des différents services d'un fichier docker compose
+							* Cette commande est utile si les images (Dockerfile) utilisentsont construites directement par le fichier docker compose
 							
 							```shell
 							docker-compose build
@@ -797,8 +797,8 @@
 						<textarea data-template>
 							#### docker-compose pull [OPTIONS]
 
-							permets de récupérer les images docker utile au service du registry en local.
-							si j'utilise pour un a plusieurs services des images du registry, cette commande permet de les récupérer en local pour pouvoir les utiliser.
+							* Permet de récupérer les images docker d'un registry externe pour les télécharger en local
+							* Si j'utilise pour un a plusieurs services des images du registry, cette commande permet de les récupérer en local pour pouvoir les utiliser
 
 							```shell
 							docker-compose pull
@@ -809,10 +809,11 @@
 						<textarea data-template>
 							#### docker-compose up [OPTIONS]
 
-							Permets de construire l'ensemble des conteneur /service, des volumes et des networks déclarés dans le fichier docker composent.
-							il permet de tout mettre en place, les éléments et leurs configurations.
-							S'il y a des dockers filent à construire, ce sera fait automatiquement à la première exécution (après il faudra faire une docker compose build).
-							S'il y a des images à récupérer, ce sera fait automatiquement à la première exécution (après il faudra faire une docker compose pull).
+							* Permet de construire l'ensemble des conteneurs/services, des volumes et des networks déclarés dans le fichier docker-compose.yaml
+							* Permet de tout mettre en place, les éléments et leurs configurations
+							* S'il y a des DockerFiles à construire, ce sera fait automatiquement à la première exécution (après il faudra faire une docker compose build)
+							* S'il y a des images à récupérer, ce sera fait automatiquement à la première exécution (après il faudra faire une docker compose pull)
+							* Le '-d' permet de ne pas être accroché aux logs des conteneurs au démarrage (detach)
 
 							```shell
 							docker-compose up -d
@@ -823,7 +824,7 @@
 						<textarea data-template>
 							#### docker-compose ps [OPTIONS]
 
-							permets d'afficher l'ensemble des services démarrés, leur état et configurations.
+							* Permet d'afficher l'ensemble des services démarrés, leur état et leur configuration network.
 
 							```shell
 							docker-compose ps
@@ -834,8 +835,8 @@
 						<textarea data-template>
 							#### docker-compose exec [OPTIONS] SERVICE COMMAND [ARG...]
 
-							permets d'exécuter une commande dans un conteneur/service existant.
-							par exemple si je veux lancer la commande `ls` dans un service appelle Linux;
+							* Permet d'exécuter une commande dans un conteneur/service existant.
+							* Par exemple si je veux lancer la commande `ls` dans un service appelle linux;
 
 							```shell
 							docker-compose exec linux ls -a
@@ -846,8 +847,8 @@
 						<textarea data-template>
 							#### docker-compose attach [OPTIONS] CONTAINER
 
-							permets d'attacher le terminal à un conteneur/service existant.
-							par exemple je peux vouloir attacher mon terminal au service Linux;
+							* Permet d'attacher le terminal à un conteneur/service existant.
+							* Par exemple je peux vouloir attacher mon terminal au service linux;
 
 							```shell
 							docker-compose attach linux
@@ -858,8 +859,8 @@
 						<textarea data-template>
 							#### docker-compose logs [OPTIONS] SERVICE [SERVICE...]
 
-							Permets d'afficher les logs d'un à plusieurs services.
-							par exemple je peux vouloir visualiser les logs du conteneur Linux et Windows;
+							* Permet d'afficher les logs d'un à plusieurs services.
+							* Par exemple je peux vouloir visualiser les logs du conteneur linux et windows;
 
 							```shell
 							docker-compose logs linux windows
@@ -870,8 +871,8 @@
 						<textarea data-template>
 							#### docker-compose stop [OPTIONS] SERVICE [SERVICE...]
 
-							sert à stopper l'exécution d'un à plusieurs services mais ne le détruit pas (ni le conteur et ni le contenu).
-							ici si je veux stopper mon conteneur Linux:
+							* Sert à stopper l'exécution d'un à plusieurs services mais ne le/les détruit pas (ni le conteneur et ni son contenu)
+							* Ici si je veux stopper mon conteneur linux:
 
 							```shell
 							docker-compose stop linux
@@ -882,8 +883,8 @@
 						<textarea data-template>
 							#### docker-compose rm [OPTIONS]
 
-							sert à détruire un à plusieurs services, supression du conteneur et de son contenu (hors volumes).
-							ici si je veux détruire mon conteneur Linux:
+							* Sert à détruire un à plusieurs services, supression du conteneur et de son contenu (hors volumes)
+							* Ici si je veux détruire mon conteneur linux:
 
 							```shell
 							docker-compose rm linux
@@ -940,7 +941,7 @@
 
 							##### creation d'une infrastructure avec docker-compose
 
-							nous allons creer un fichier docker compose permettant de démarrer une application avec une API, une interface web et une base de données.
+							* Nous allons créer un fichier docker compose permettant de démarrer une application avec une API, une interface web et une base de données
 
 						</textarea>
 					</section>
@@ -952,7 +953,7 @@
 							```shell
 								mkdir docker-formation-compose
 								cd docker-formation-compose
-								mkdir src
+								mkdir -p src
 								git clone git@github.com:dreamquark-public/docker-rick-and-morty-app.git src/front
 								git clone git@github.com:dreamquark-public/docker-rick-and-morty-api.git src/api
 								touch docker-compose.yml
@@ -977,7 +978,7 @@
 									volumes:
 									- ./src/front:/workspace/front
 									environment:
-									NODE_ENV: development
+									  NODE_ENV: development
 									working_dir: /workspace/front
 									command: yarn start
 							</code></pre>
@@ -993,15 +994,15 @@
 								api:
 									image: rick-morty/nodejs
 									networks:
-									- monreseau
+									  - monreseau
 									ports:
-									- "8080:8080"
-									- "9042:9042"
+									  - "8080:8080"
+									  - "9042:9042"
 									volumes:
-									- ./src/api/:/workspace/api
+									  - ./src/api/:/workspace/api
 									environment:
-									port: 8080
-									NODE_ENV: development
+									  port: 8080
+									  NODE_ENV: development
 									working_dir: /workspace/api/
 									command: yarn serve:dev
 							</code></pre>
@@ -1017,13 +1018,13 @@
 								postgres:
 									image: postgres:12.0-alpine
 									networks:
-									- monreseau
+									  - monreseau
 									environment:
-									POSTGRES_USER: pguser
-									POSTGRES_PASSWORD: pguserpw
-									POSTGRES_DB: rickandmorty
+									  POSTGRES_USER: pguser
+									  POSTGRES_PASSWORD: pguserpw
+									  POSTGRES_DB: rickandmorty
 									ports:
-									- "5432:5432"
+									  - "5432:5432"
 							</code></pre>
 
 						</textarea>
@@ -1050,7 +1051,7 @@
 									db-data:
 							</code></pre>
 
-							puis ajouter la configuration dans le service db:
+							* Puis ajouter la configuration dans le service db:
 							
 							<pre><code data-trim data-noescape>
 								volumes:
