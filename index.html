@@ -515,10 +515,10 @@
 								<textarea data-template>
 									#### Docker image sans volume
 
-									* Construction de l'image `rick-morty/api` image:
+									* Construction de l'image `rick-morty/nodejs` image:
 
 									```
-									docker build -t rick-morty/api .
+									docker build -t rick-morty/nodejs .
 									```
 								</textarea>
 							</section>
@@ -527,7 +527,7 @@
 						* Création d'un conteneur `riick`:
 
 						```shell
-						docker run -d -p 8080:8080 --name riick rick-morty/api
+						docker run -d -p 8080:8080 --name riick rick-morty/nodejs
 						```
 
 						* On peut accéder à l'environnant de développement GraphQL a l'adresse [localhost:8080/ide](http://localhost:8080/ide)
@@ -545,9 +545,9 @@
 
 							...other command
 						</code></pre>
-						* Reconstruisons l'image `rick-morty/api`:
+						* Reconstruisons l'image `rick-morty/nodejs`:
 						```shell
-						docker build -t rick-morty/api .
+						docker build -t rick-morty/nodejs .
 						```
 					</section>
 					<section data-markdown>
@@ -555,7 +555,7 @@
 
 						```shell
 						docker rm riick
-						docker run -d -p 9000:9000 --name riick rick-morty/api
+						docker run -d -p 9000:9000 --name riick rick-morty/nodejs
 						```
 
 						* Nous pouvons vérifier le fonctionnement en accédant à l'ide GraphQL à l'adresse [localhost:9000/ide](http://localhost:9000/ide)
@@ -584,16 +584,16 @@
 
 							CMD [ "yarn", "serve:dev" ]
 						</code></pre>
-						* Construction de l'image `rick-morty/api`:
+						* Construction de l'image `rick-morty/nodejs`:
 						
 						```shell
-						docker build -t rick-morty/api .
+						docker build -t rick-morty/nodejs .
 						```
 					</section>
 					<section data-markdown>
 						* Maintenant nous passons le code sous la forme d'un volume partagé lors du démarrage du conteneur (et donc plus besoin de reconstruire l'image si on change de dossier et/ou de code):
 						```shell
-						docker run -d -p 9000:9000 -v ./ --name riick rick-morty/api
+						docker run -d -p 9000:9000 -v ./ --name riick rick-morty/nodejs
 						```
 					</section>
 				</section>
@@ -932,6 +932,133 @@
 						</textarea>
 					</section>
 					
+				</section>
+
+				<section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation d'une infrastructure avec docker-compose
+
+							nous allons creer un fichier docker compose permettant de démarrer une application avec une API, une interface web et une base de données.
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### création des dossiers
+
+							```shell
+								mkdir docker-formation-compose
+								cd docker-formation-compose
+								mkdir src
+								git clone git@github.com:dreamquark-public/docker-rick-and-morty-app.git src/front
+								git clone git@github.com:dreamquark-public/docker-rick-and-morty-api.git src/api
+								touch docker-compose.yml
+							```
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation du service frontend
+							
+							<pre><code data-trim data-noescape>
+								version: "3"
+
+								services:
+
+								front:
+									image: rick-morty/nodejs
+									ports:
+									- "3000:3000"
+									volumes:
+									- ./src/front:/workspace/front
+									environment:
+									NODE_ENV: development
+									working_dir: /workspace/front
+									command: yarn start
+							</code></pre>
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation du service api
+							
+							<pre><code data-trim data-noescape>
+								api:
+									image: rick-morty/nodejs
+									networks:
+									- monreseau
+									ports:
+									- "8080:8080"
+									- "9042:9042"
+									volumes:
+									- ./src/api/:/workspace/api
+									environment:
+									port: 8080
+									NODE_ENV: development
+									working_dir: /workspace/api/
+									command: yarn serve:dev
+							</code></pre>
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation du service db
+							
+							<pre><code data-trim data-noescape>
+								postgres:
+									image: postgres:12.0-alpine
+									networks:
+									- monreseau
+									environment:
+									POSTGRES_USER: pguser
+									POSTGRES_PASSWORD: pguserpw
+									POSTGRES_DB: rickandmorty
+									ports:
+									- "5432:5432"
+							</code></pre>
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation du network
+							
+							<pre><code data-trim data-noescape>
+								networks:
+									monreseau:
+							</code></pre>
+
+						</textarea>
+					</section>
+					<section data-markdown>
+						<textarea data-template>
+
+							##### creation d'un volume pour la db
+							
+							<pre><code data-trim data-noescape>
+								volumes:
+									db-data:
+							</code></pre>
+
+							puis ajouter la configuration dans le service db:
+							
+							<pre><code data-trim data-noescape>
+								volumes:
+									- db-data:/var/lib/postgresql/data
+							</code></pre>
+
+						</textarea>
+					</section>
 				</section>
 
 				<section><h3>Quid de la production</h3>
